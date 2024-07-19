@@ -24,7 +24,7 @@ const productSchema = new mongoose.Schema({
 
 const Product = mongoose.model("Product", productSchema);
 
-// CRUD routes
+
 app.get("/products", async (req, res) => {
   try {
     const products = await Product.find();
@@ -44,9 +44,32 @@ app.post("/products", async (req, res) => {
   }
 });
 
+app.put("/products/:id", async (req, res) => {
+  try {
+    const updatedProduct = await Product.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.json(updatedProduct);
+  } catch (error) {
+    res.status(400).json({ message: "Error updating product" });
+  }
+});
+
 app.delete("/products/:id", async (req, res) => {
   try {
-    await Product.findByIdAndDelete(req.params.id);
+    const result = await Product.findByIdAndDelete(req.params.id);
+
+    if (!result) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
     res.json({ message: "Product deleted" });
   } catch (error) {
     res.status(500).json({ message: "Error deleting product" });

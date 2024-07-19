@@ -4,16 +4,22 @@ import {
   CardContent,
   CardActions,
   Typography,
-  CardMedia
+  CardMedia,
+  Button,
 } from "@mui/material";
-import { Product } from "../interfaces/Product"; 
+import { Product } from "../interfaces/Product";
 
 interface ProductItemProps {
   product: Product;
   onDelete: (id: string) => void;
+  onEdit: (product: Product) => void;
 }
 
-const ProductItem: React.FC<ProductItemProps> = ({ product, onDelete }) => {
+const ProductItem: React.FC<ProductItemProps> = ({
+  product,
+  onDelete,
+  onEdit,
+}) => {
   return (
     <Card className="card-item">
       <CardMedia
@@ -37,6 +43,7 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, onDelete }) => {
         </Typography>
       </CardContent>
       <CardActions>
+        <button onClick={() => onEdit(product)}>Edit</button>
         <button onClick={() => onDelete(product._id!)}>Delete</button>
       </CardActions>
     </Card>

@@ -3,11 +3,13 @@ import {
   getProducts,
   addProduct,
   deleteProduct,
+  updateProduct,
 } from "../services/productService";
 import { Product } from "../interfaces/Product";
 import ProductItem from "./ProductItem";
 import AddProductModal from "./AddProduct";
 import DeleteProductModal from "./DeleteProduct";
+import EditProductModal from "./EditProduct";
 import {
   Select,
   MenuItem,
@@ -19,9 +21,13 @@ import {
 const ProductList: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [sortOption, setSortOption] = useState<string>("name");
-  const [openAddProduct, setOpenAddProduct] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const [showAddModal, setShowAddModal] = useState<boolean>(false);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [showEditModal, setShowEditModal] = useState<boolean>(false);
+
   const [deleteProductId, setDeleteProductId] = useState<string | null>(null);
+  const [editProduct, setEditProduct] = useState<Product | null>(null);
 
   useEffect(() => {
     loadProducts();
@@ -47,7 +53,7 @@ const ProductList: React.FC = () => {
     const addedProduct = await addProduct(product);
     const newProducts = [...products, addedProduct];
     setProducts(sortProducts(newProducts, sortOption));
-    setOpenAddProduct(false);
+    setShowAddModal(false);
   };
 
   const handleDeleteProduct = async () => {
@@ -62,6 +68,15 @@ const ProductList: React.FC = () => {
     }
   };
 
+  const handleEditProduct = async (updatedProduct: Product) => {
+    const editedProduct = await updateProduct(updatedProduct);
+    const newProducts = products.map((product) =>
+      product._id === editedProduct._id ? editedProduct : product
+    );
+    setProducts(sortProducts(newProducts, sortOption));
+    setShowEditModal(false);
+  };
+
   const handleSortChange = (event: SelectChangeEvent<string>) => {
     setSortOption(event.target.value as string);
   };
@@ -69,7 +84,7 @@ const ProductList: React.FC = () => {
   return (
     <div>
       <h1>Product List</h1>
-      <button onClick={() => setOpenAddProduct(true)} className="add-btn">
+      <button onClick={() => setShowAddModal(true)} className="add-btn">
         Add Product
       </button>
       <FormControl variant="outlined" className="sort-options">
@@ -89,13 +104,17 @@ const ProductList: React.FC = () => {
               setDeleteProductId(id);
               setShowDeleteModal(true);
             }}
+            onEdit={() => {
+              setEditProduct(product);
+              setShowEditModal(true);
+            }}
           />
         ))}
       </div>
 
       <AddProductModal
-        open={openAddProduct}
-        onClose={() => setOpenAddProduct(false)}
+        open={showAddModal}
+        onClose={() => setShowAddModal(false)}
         onAdd={handleAddProduct}
       />
 
@@ -103,6 +122,13 @@ const ProductList: React.FC = () => {
         open={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
         onDelete={handleDeleteProduct}
+      />
+
+      <EditProductModal
+        open={showEditModal}
+        onClose={() => setShowEditModal(false)}
+        onEdit={handleEditProduct}
+        product={editProduct}
       />
     </div>
   );

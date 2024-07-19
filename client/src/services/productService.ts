@@ -16,3 +16,8 @@ export const addProduct = async (product: Product): Promise<Product> => {
 export const deleteProduct = async (id: string): Promise<void> => {
   await axios.delete(`${API_URL}/${id}`);
 };
+
+export const updateProduct = async (product: Product): Promise<Product> => {
+  const response = await axios.put(`${API_URL}/${product._id}`, product);
+  return response.data;
+};
