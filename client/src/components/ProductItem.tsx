@@ -4,8 +4,7 @@ import {
   CardContent,
   CardActions,
   Typography,
-  CardMedia,
-  Button,
+  CardMedia
 } from "@mui/material";
 import { Product } from "../interfaces/Product";
 

@@ -1,22 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {
-  getProducts,
-  addProduct,
-  deleteProduct,
-  updateProduct,
-} from "../services/productService";
+import { getProducts, addProduct, deleteProduct, updateProduct } from "../services/productService";
 import { Product } from "../interfaces/Product";
 import ProductItem from "./ProductItem";
 import AddProductModal from "./AddProduct";
 import DeleteProductModal from "./DeleteProduct";
 import EditProductModal from "./EditProduct";
-import {
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl,
-  SelectChangeEvent,
-} from "@mui/material";
+import { Select, MenuItem, InputLabel, FormControl, SelectChangeEvent } from "@mui/material";
 
 const ProductList: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);

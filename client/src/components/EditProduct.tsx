@@ -12,12 +12,7 @@ interface EditProductProps {
   product: Product | null;
 }
 
-const EditProduct: React.FC<EditProductProps> = ({
-  open,
-  onClose,
-  onEdit,
-  product,
-}) => {
+const EditProduct: React.FC<EditProductProps> = ({open, onClose, onEdit, product}) => {
   const [editedProduct, setEditedProduct] = React.useState<Product | null>(
     product
   );
