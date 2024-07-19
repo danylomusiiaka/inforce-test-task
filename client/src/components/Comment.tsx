@@ -25,20 +25,28 @@ const CommentsModal: React.FC<CommentsModalProps> = ({
     if (open) {
       loadComments();
     }
-  }, [open]);
+  }, [open, productId]);
 
   const loadComments = async () => {
-    const data = await getComments(productId);
-    setComments(data);
+    if (productId) {
+      const allComments = await getComments();
+
+      const filteredComments = allComments.filter(
+        (comment) => comment.productId === productId
+      );
+      setComments(filteredComments);
+    }
   };
 
   const handleAddComment = async () => {
+    if (newComment.trim() === "") return;
     const comment: Comment = {
-      _id: "", 
+      _id: "",
       productId,
       description: newComment,
       date: new Date().toISOString(),
     };
+
     await addComment(comment);
     setNewComment("");
     loadComments();
@@ -72,6 +80,7 @@ const CommentsModal: React.FC<CommentsModalProps> = ({
         <div>
           {comments.map((comment) => (
             <div key={comment._id}>
+              <p>{comment.date}</p>
               <p>{comment.description}</p>
               <Button
                 variant="outlined"
