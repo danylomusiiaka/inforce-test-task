@@ -1,7 +1,4 @@
-export interface Size {
-  width: number;
-  height: number;
-}
+import { Comment } from "./Comment";
 
 export interface Product {
   _id?: string;
@@ -10,4 +7,10 @@ export interface Product {
   count: number;
   size: Size;
   weight: string;
+  comments?: Comment[];
+}
+
+export interface Size {
+  width: number;
+  height: number;
 }

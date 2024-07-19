@@ -5,6 +5,7 @@ import ProductItem from "./ProductItem";
 import AddProductModal from "./AddProduct";
 import DeleteProductModal from "./DeleteProduct";
 import EditProductModal from "./EditProduct";
+import CommentsModal from "./Comment";
 import { Select, MenuItem, InputLabel, FormControl, SelectChangeEvent } from "@mui/material";
 
 const ProductList: React.FC = () => {
@@ -14,6 +15,15 @@ const ProductList: React.FC = () => {
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
+  const [showCommentsModal, setShowCommentsModal] = useState<boolean>(false);
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(
+    null
+  );
+
+  const handleViewComments = (productId: string) => {
+    setSelectedProductId(productId);
+    setShowCommentsModal(true);
+  };
 
   const [deleteProductId, setDeleteProductId] = useState<string | null>(null);
   const [editProduct, setEditProduct] = useState<Product | null>(null);
@@ -97,6 +107,7 @@ const ProductList: React.FC = () => {
               setEditProduct(product);
               setShowEditModal(true);
             }}
+            onViewComments={() => handleViewComments(product._id || "")}
           />
         ))}
       </div>
@@ -119,6 +130,14 @@ const ProductList: React.FC = () => {
         onEdit={handleEditProduct}
         product={editProduct}
       />
+
+      {selectedProductId && (
+        <CommentsModal
+          open={showCommentsModal}
+          onClose={() => setShowCommentsModal(false)}
+          productId={selectedProductId}
+        />
+      )}
     </div>
   );
 };
