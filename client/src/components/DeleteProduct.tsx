@@ -12,7 +12,7 @@ const DeleteProduct: React.FC<DeleteProductProps> = ({open,onClose,onDelete,}) =
   return (
     <Modal open={open} onClose={onClose}>
       <Box className="modal-box">
-        <h2>Confirm Delete</h2>
+        <h2>Are you sure you want to delete?</h2>
         <button onClick={onDelete}>Confirm</button>
         <button onClick={onClose}>Cancel</button>
       </Box>
